@@ -17,5 +17,5 @@ services:
       context: .
       dockerfile: ./Dockerfile-python
     volumes:
-      - ./code:/code
+      - ./python:/code
     restart: always
