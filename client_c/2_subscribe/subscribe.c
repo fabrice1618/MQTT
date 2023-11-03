@@ -8,16 +8,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "config.h"
+#include "../config.h"
+
+# define MQTT_TOPIC "sensor/luminosite"
 
 /* Callback called when the client receives a CONNACK message from the broker. */
 void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 {
 	int rc;
-	/* Print out the connection result. mosquitto_connack_string() produces an
-	 * appropriate string for MQTT v3.x clients, the equivalent for MQTT v5.0
-	 * clients is mosquitto_reason_string().
-	 */
+
 	printf("on_connect: %s\n", mosquitto_connack_string(reason_code));
 	if(reason_code != 0){
 		/* If the connection fails for any reason, we don't want to keep on
@@ -29,10 +28,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	/* Making subscriptions in the on_connect() callback means that if the
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
-	rc = mosquitto_subscribe(mosq, NULL, "sensor/luminosite/#", 1);
+	rc = mosquitto_subscribe(mosq, NULL, MQTT_TOPIC, 1);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
-		/* We might as well disconnect if we were unable to subscribe */
 		mosquitto_disconnect(mosq);
 	}
 }
@@ -75,7 +73,6 @@ int main(int argc, char *argv[])
 	struct mosquitto *mosq;
 	int rc;
 
-	/* Required before calling other mosquitto functions */
 	mosquitto_lib_init();
 
 	/* Create a new client instance.
@@ -114,5 +111,6 @@ int main(int argc, char *argv[])
 	mosquitto_loop_forever(mosq, -1, 1);
 
 	mosquitto_lib_cleanup();
+	
 	return 0;
 }

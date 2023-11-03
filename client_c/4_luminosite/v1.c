@@ -8,11 +8,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "config.h"
-#include "cJSON.h"
+#include "../config.h"
+#include "../cJSON.h"
 
 #define NOMBRE_MESURES 8
 #define TOPIC_SEND "datastore/luminosite"
+#define TOPIC_RECEIVE "sensor/luminosite"
 
 typedef struct luminosite {
 	char capteur[50];
@@ -155,7 +156,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	/* Making subscriptions in the on_connect() callback means that if the
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
-	rc = mosquitto_subscribe(mosq, NULL, "sensor/luminosite/#", 1);
+	rc = mosquitto_subscribe(mosq, NULL, TOPIC_RECEIVE, 1);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -263,14 +264,9 @@ int main(int argc, char *argv[])
 		exit_error(mosquitto_strerror(rc), 1);
 	}
 
-	/* Run the network loop in a blocking call. The only thing we do in this
-	 * example is to print incoming messages, so a blocking call here is fine.
-	 *
-	 * This call will continue forever, carrying automatic reconnections if
-	 * necessary, until the user calls mosquitto_disconnect().
-	 */
-	mosquitto_loop_forever(mosq, -1, 1);
+	mosquitto_loop_forever(mosq, -1, 1);	// Run the network loop in a blocking call
 
 	mosquitto_lib_cleanup();
+
 	return 0;
 }

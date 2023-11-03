@@ -1,8 +1,8 @@
 #include <stdio.h> 
-#include "cJSON.h"
+#include "../cJSON.h"
 
-int main() { 
-    // open the file 
+int main() 
+{ 
     FILE *fp = fopen("data.json", "r"); 
     if (fp == NULL) { 
         printf("Error: Unable to open the file.\n"); 
@@ -37,15 +37,12 @@ int main() {
     mesures = cJSON_GetObjectItemCaseSensitive(json, "mesures");
     cJSON_ArrayForEach(mesure, mesures)
     {
-        if (!cJSON_IsNumber(mesure))
-        {
+        if (!cJSON_IsNumber(mesure)) {
             printf("n'est pas un nombre\n");
         } else {
             printf("nombre: %d\n", (int)mesure->valuedouble);
         }
-
     }
-
 
 	// delete the JSON object 
 	cJSON_Delete(json); 
