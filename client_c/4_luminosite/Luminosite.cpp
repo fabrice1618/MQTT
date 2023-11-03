@@ -102,20 +102,16 @@ void Luminosite::to_JSON()
 	char *json_string = NULL;
 	cJSON *json_luminosite = cJSON_CreateObject();
 
-	if (cJSON_AddStringToObject(json_luminosite, "capteur", m_capteur.c_str()) == NULL) {
+	if ((NULL == cJSON_AddStringToObject(json_luminosite, "capteur", m_capteur.c_str()) ) 
+    || (NULL == cJSON_AddNumberToObject(json_luminosite, "lux", m_lux))) {
 		cJSON_Delete(json_luminosite);
         std::cerr << "erreur creation json" << std::endl;
         throw 2;
     }
 
-    if (cJSON_AddNumberToObject(json_luminosite, "lux", m_lux) == NULL) {
-		cJSON_Delete(json_luminosite);
-        std::cerr << "erreur creation json" << std::endl;
-        throw 2;
-    }
-
-    json_string = cJSON_Print(json_luminosite);
-    if (json_string == NULL) {
+//    json_string = cJSON_Print(json_luminosite);
+    json_string = cJSON_PrintUnformatted(json_luminosite);
+    if (NULL == json_string) {
 	    std::cerr << "Failed to print luminosite." << std::endl;
         throw 1;
     }
