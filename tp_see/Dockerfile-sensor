@@ -5,4 +5,4 @@ WORKDIR /code
 COPY ./requirements.txt /code/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-CMD ["python3", "see_sensor_temp_bureau.py"]
+CMD ["python3", "sensor_temperature_bureau.py"]

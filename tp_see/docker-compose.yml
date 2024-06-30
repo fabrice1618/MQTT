@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  python:
+    container_name: tp_mqtt_python
+    build:
+      context: .
+      dockerfile: ./Dockerfile-python
+    volumes:
+      - ./python:/code
+    restart: unless-stopped
+
+  sensor:
+    container_name: tp_mqtt_sensor
+    build:
+      context: .
+      dockerfile: ./Dockerfile-sensor
+    volumes:
+      - ./python:/code
+    restart: unless-stopped
+
+  app:
+    container_name: tp_mqtt_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile-app
+    volumes:
+      - ./python:/code
+    restart: unless-stopped

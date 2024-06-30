@@ -8,7 +8,6 @@ services:
       - ./mosquitto:/mosquitto
     ports:
       - "1883:1883"
-      - "9001:9001"
     restart: always
  
   python:
@@ -16,15 +15,6 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile-python
-    volumes:
-      - ./python:/code
-    restart: unless-stopped
-
-  sensor:
-    container_name: mqtt_sensor
-    build:
-      context: .
-      dockerfile: ./Dockerfile-sensor
     volumes:
       - ./python:/code
     restart: unless-stopped
