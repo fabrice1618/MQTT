@@ -1,14 +1,21 @@
 # TP MQTT
 
-## Configurer l'accès au broker
+## Configuration du broker
 
 copier le fichier de configuration, puis insérer les paramètres correspondants à votre configuration:
 
 ```bash
-cp python/config_dist.py python/config.py
+cp client_c/config_dist.h client_c/config.h
 ```
 
-- Accès par mot de passe hello / hello_world
+Configurer les paramètres:
+- adresse broker
+- utilisateur
+- mot de passe
+
+## Exemples:
+
+Exemples dans les sous dossiers de client_c/
 
 ## Utilitaires
 
